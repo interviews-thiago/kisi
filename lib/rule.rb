@@ -17,6 +17,16 @@ class Rule
   end
 
   def matches?(event)
+    user_matches?(event) && action_matches?(event)
+  end
+
+  private
+
+  def user_matches?(event)
     !@conditions[:user] || @conditions[:user] == event[:actor_email]
+  end
+
+  def action_matches?(event)
+    !@conditions[:action] || @conditions[:action] == event[:action]
   end
 end

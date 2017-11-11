@@ -13,11 +13,11 @@ RSpec.describe Rule do
   end
 
   describe '#matches' do
-    let(:time) {nil}
-    let(:user) {nil}
-    let(:action) {nil}
-    let(:object) {nil}
-    let(:success) {nil}
+    let(:time) { nil }
+    let(:user) { nil }
+    let(:action) { nil }
+    let(:object) { nil }
+    let(:success) { nil }
     let(:conditions) do
       {
         time: time,
@@ -37,7 +37,7 @@ RSpec.describe Rule do
       }
     end
 
-    subject {described_class.new('', [''], conditions)}
+    subject { described_class.new('', [''], conditions) }
 
     context 'empty conditions set' do
       it 'matches any event' do
@@ -46,14 +46,28 @@ RSpec.describe Rule do
     end
 
     context 'user condition is the same as event' do
-      let(:user) {'email@example.com'}
+      let(:user) { 'email@example.com' }
       it 'matches' do
         expect(subject.matches?(event)).to be_truthy
       end
     end
 
     context 'user condition is different from event' do
-      let(:user) {'not_email@example.com'}
+      let(:user) { 'not_email@example.com' }
+      it 'does not match' do
+        expect(subject.matches?(event)).to be_falsey
+      end
+    end
+
+    context 'action condition is the same as event' do
+      let(:action) { 'unlock' }
+      it 'matches' do
+        expect(subject.matches?(event)).to be_truthy
+      end
+    end
+
+    context 'action condition is different from event' do
+      let(:action) { 'lock' }
       it 'does not match' do
         expect(subject.matches?(event)).to be_falsey
       end
