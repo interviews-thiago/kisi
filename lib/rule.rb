@@ -16,7 +16,7 @@ class Rule
     @conditions = conditions
   end
 
-  def matches?(_event)
-    true
+  def matches?(event)
+    !@conditions[:user] || @conditions[:user] == event[:actor_email]
   end
 end

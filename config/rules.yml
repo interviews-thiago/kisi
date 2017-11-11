@@ -25,4 +25,4 @@
     - another@example.com
   conditions:
     action: 'unlock'
-    success: both
+    success: 'all'
