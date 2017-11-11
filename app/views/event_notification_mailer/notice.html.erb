@@ -1,1 +1,14 @@
-<%= @event[:success] %>
+<h3> Action [<%= @event[:action] %>] was <%= @event[:success] ? 'successful' : 'unsuccessful' %></h3>
+<pre><%= @event[:created_at] %></pre>
+
+<p>
+  <%= @event[:actor_type] %> [id=<%= @event[:actor_id] %>]
+  tried to <%= @event[:action] %>
+  <%= @event[:object_type] %> [id=<%= @event[:object_id] %>]
+  and was <%= @event[:success] ? 'successful' : 'unsuccessful' %>
+</p>
+
+<pre>
+System's message [code=<%= @event[:code] %>]:
+<%= @event[:message] %>
+</pre>
