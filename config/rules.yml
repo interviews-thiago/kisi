@@ -1,0 +1,28 @@
+- subject: unsuccessful unlock attempt!
+  recipients:
+    - test@example.com
+    - another@example.com
+  conditions:
+    action: 'unlock'
+    object: 'Lock'
+    success: 'false'
+- subject: unsuccessful unlock attempts after working hours!
+  recipients:
+    - test@example.com
+    - another@example.com
+  conditions:
+    time: # 24h format
+      begin: '18:00'
+      end: '08:00'
+    # The Kisi documentation did not mention an `actor_email`, but I added anyway as a possible event payload
+    user: 'someone@work.com'
+    action: 'unlock'
+    object: 'Lock'
+    success: 'false'
+- subject: someone used a Lock!!
+  recipients:
+    - test@example.com
+    - another@example.com
+  conditions:
+    action: 'unlock'
+    success: both
