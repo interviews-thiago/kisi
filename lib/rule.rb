@@ -4,8 +4,8 @@ class Rule
   def self.set_from_definitions
     definitions = YAML.safe_load(File.read(File.join(Rails.root, 'config', 'rules.yml')))
     definitions
-      .map {|r| HashWithIndifferentAccess.new(r)}
-      .map {|r| new(r[:subject], r[:recipients], r[:conditions])}
+      .map { |r| HashWithIndifferentAccess.new(r) }
+      .map { |r| new(r[:subject], r[:recipients], r[:conditions]) }
   end
 
   attr_reader :subject, :recipients
@@ -40,7 +40,7 @@ class Rule
 
   def success_matches?(event)
     !@conditions[:success] ||
-      @conditions[:success] == 'all' ||
+      @conditions[:success] == 'any' ||
       @conditions[:success] == event[:success]
   end
 
@@ -70,7 +70,7 @@ class Rule
         ending = Time.zone.parse(ending_hour_minute, event_time)
       end
     end
-    return beginning, ending
+    [beginning, ending]
   end
 
   def parse_created_at(event)

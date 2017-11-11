@@ -101,8 +101,8 @@ RSpec.describe Rule do
       end
     end
 
-    context 'success condition is set as all' do
-      let(:success) { 'all' }
+    context 'success condition is set as any' do
+      let(:success) { 'any' }
       it 'does not match' do
         expect(subject.matches?(event)).to be_truthy
       end
