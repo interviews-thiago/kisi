@@ -10,7 +10,7 @@
     - test@example.com
     - another@example.com
   conditions:
-    time: # 24h format
+    time: # 24h format, UTC time!!
       begin: '18:00'
       end: '08:00'
     # The Kisi documentation did not mention an `actor_email`, but I added anyway as a possible event payload

@@ -33,7 +33,7 @@ RSpec.describe Rule do
         action: 'unlock',
         object_type: 'Lock',
         success: 'true',
-        created_at: '2017-11-11T20:01:20+01:00'
+        created_at: '2017-11-11T20:01:00+01:00'
       }
     end
 
@@ -105,6 +105,86 @@ RSpec.describe Rule do
       let(:success) { 'all' }
       it 'does not match' do
         expect(subject.matches?(event)).to be_truthy
+      end
+    end
+
+    context 'time condition' do
+      let(:time_begin) { nil }
+      let(:time_end) { nil }
+      let(:time) do
+        { begin: time_begin, end: time_end }
+      end
+
+      context 'set empty' do
+        it 'matches' do
+          expect(subject.matches?(event)).to be_truthy
+        end
+      end
+
+      context 'set only with begin' do
+        let(:time_begin) { '00:00' }
+        it 'matches' do
+          expect(subject.matches?(event)).to be_truthy
+        end
+      end
+
+      context 'set only with end' do
+        let(:time_end) { '00:00' }
+        it 'matches' do
+          expect(subject.matches?(event)).to be_truthy
+        end
+      end
+
+      context 'set between the same day,' do
+        context 'and event time is not in between (UTC)' do
+          let(:time_begin) { '20:01' }
+          let(:time_end) { '20:02' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_falsey
+          end
+        end
+
+        context 'and event time is in between' do
+          let(:time_begin) { '19:01' }
+          let(:time_end) { '19:02' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_truthy
+          end
+        end
+
+        context 'and event time is not in between' do
+          let(:time_begin) { '19:01' }
+          let(:time_end) { '19:01' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_falsey
+          end
+        end
+      end
+
+      context 'set between two days' do
+        context 'and event time is in between, and in the first day' do
+          let(:time_begin) { '19:00' }
+          let(:time_end) { '18:59' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_truthy
+          end
+        end
+
+        context 'and event time is in between, and in the second day' do
+          let(:time_begin) { '19:04' }
+          let(:time_end) { '19:02' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_truthy
+          end
+        end
+
+        context 'and event time is not in between' do
+          let(:time_begin) { '19:02' }
+          let(:time_end) { '19:01' }
+          it 'matches' do
+            expect(subject.matches?(event)).to be_falsey
+          end
+        end
       end
     end
   end
