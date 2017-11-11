@@ -17,7 +17,7 @@ class Rule
   end
 
   def matches?(event)
-    user_matches?(event) && action_matches?(event)
+    user_matches?(event) && action_matches?(event) && object_matches?(event)
   end
 
   private
@@ -28,5 +28,9 @@ class Rule
 
   def action_matches?(event)
     !@conditions[:action] || @conditions[:action] == event[:action]
+  end
+
+  def object_matches?(event)
+    !@conditions[:object] || @conditions[:object] == event[:object_type]
   end
 end

@@ -72,5 +72,19 @@ RSpec.describe Rule do
         expect(subject.matches?(event)).to be_falsey
       end
     end
+
+    context 'object condition is the same as event' do
+      let(:object) { 'Lock' }
+      it 'matches' do
+        expect(subject.matches?(event)).to be_truthy
+      end
+    end
+
+    context 'object condition is different from event' do
+      let(:object) { 'Door' }
+      it 'does not match' do
+        expect(subject.matches?(event)).to be_falsey
+      end
+    end
   end
 end

@@ -4,7 +4,6 @@
     - another@example.com
   conditions:
     action: 'unlock'
-    object: 'Lock'
     success: 'false'
 - subject: unsuccessful unlock attempts after working hours!
   recipients:
