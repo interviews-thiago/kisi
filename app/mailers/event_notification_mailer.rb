@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventNotificationMailer < ApplicationMailer
   def notice(recipients, subject, event)
     @subject = subject

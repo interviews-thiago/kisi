@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'POST /events', type: :request do
@@ -19,7 +21,7 @@ RSpec.describe 'POST /events', type: :request do
     }
   end
 
-  before {ActiveJob::Base.queue_adapter = :test}
+  before { ActiveJob::Base.queue_adapter = :test }
   it 'returns ok' do
     headers = { Accept: 'application/json' }
     post '/events', params: lock_event, headers: headers
@@ -29,17 +31,17 @@ RSpec.describe 'POST /events', type: :request do
   it 'enqueue a job to process the event' do
     headers = { Accept: 'application/json', 'Content-Type': 'application/json' }
     post '/events', params: lock_event.to_json, headers: headers
-    expect {
+    expect do
       post '/events', params: lock_event.to_json, headers: headers
-    }.to have_enqueued_job(ProcessEventJob).with(lock_event)
+    end.to have_enqueued_job(ProcessEventJob).with(lock_event)
   end
 
   it 'filters the fields passed to the Job to prevent "param injection"' do
     headers = { Accept: 'application/json', 'Content-Type': 'application/json' }
     extra_params = lock_event.dup
     extra_params[:foo] = 'bar'
-    expect {
+    expect do
       post '/events', params: extra_params.to_json, headers: headers
-    }.to have_enqueued_job(ProcessEventJob).with(lock_event)
+    end.to have_enqueued_job(ProcessEventJob).with(lock_event)
   end
 end

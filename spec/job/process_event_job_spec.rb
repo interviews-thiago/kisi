@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ProcessEventJob do
@@ -20,7 +22,7 @@ RSpec.describe ProcessEventJob do
   end
 
   it "when an event matches a rule, send email to it's recipients" do
-    recipients = %w(a@example.com)
+    recipients = %w[a@example.com]
     email_subject = 'A Mocked Subject'
     rule_mock = double(Rule,
                        matches?: true,
@@ -34,10 +36,4 @@ RSpec.describe ProcessEventJob do
     expect(email_sent.to).to eql recipients
     expect(email_sent.subject).to eql email_subject
   end
-  # ❏ Time:   include   time   ranges   during   which   the   rule   should   be   matched
-  # ❏ User:   include   emails   that   should   match   (the   event   has   an   actor   email   field) ❏ Action:   which   action   should   match,   e.g.   unlock
-  # ❏ Object:   which   object   type   should   match,   e.g.   Lock
-  # ❏ Success:   filter   only   successful   or   unsuccessful   events   (or   both)
-
-  #   Demonstrate your microservice by filtering out unsuccessful unlock attempts and send an email to   the   subscribed   users   informing   them   that   an   unlock   failed
 end

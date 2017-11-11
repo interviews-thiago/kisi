@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   def index
     ProcessEventJob.perform_later(event)
@@ -11,13 +13,15 @@ class EventsController < ApplicationController
       .slice(
         :actor_type,
         :actor_id,
+        :actor_email,
         :action,
         :object_type,
         :object_id,
         :success,
         :code,
         :message,
-        :created_at)
-      .tap {|e| e[:references] = request.POST[:references]}
+        :created_at
+      )
+      .tap { |e| e[:references] = request.POST[:references] }
   end
 end
