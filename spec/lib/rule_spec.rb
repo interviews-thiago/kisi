@@ -8,7 +8,7 @@ RSpec.describe Rule do
       expect(rules.first).to be_a Rule
       expect(rules.first.subject).to eql('unsuccessful unlock attempt!')
       expect(rules.first.recipients).to eql(%w[test@example.com another@example.com])
-      expect(rules.first.matches?(success: false, action: 'unlock')).to be_truthy
+      expect(rules.first.matches?(success: 'false', action: 'unlock')).to be_truthy
     end
   end
 
@@ -84,6 +84,27 @@ RSpec.describe Rule do
       let(:object) { 'Door' }
       it 'does not match' do
         expect(subject.matches?(event)).to be_falsey
+      end
+    end
+
+    context 'success condition is the same as event' do
+      let(:success) { 'true' }
+      it 'matches' do
+        expect(subject.matches?(event)).to be_truthy
+      end
+    end
+
+    context 'success condition is different from event' do
+      let(:success) { 'false' }
+      it 'does not match' do
+        expect(subject.matches?(event)).to be_falsey
+      end
+    end
+
+    context 'success condition is set as all' do
+      let(:success) { 'all' }
+      it 'does not match' do
+        expect(subject.matches?(event)).to be_truthy
       end
     end
   end
